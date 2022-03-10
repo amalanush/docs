@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: service_help.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: service_help.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>var express = require('express');
+const connection = require('../databaseCon');
+const mysql = require('mysql');
+const logger = require(`../logger`).logger;
+const _ = require('underscore');
+const axios = require('axios');
+
+let ftopic_Id;
+let fquesId;
+let fansId;
+let fetypeId;
+let finaleleId;
+let insertionBool = false;
+
+/**
+ * Gets the topic name as the input and return the topic id
+ * @param {Request} req - HTTP Request
+ * @param {string} topicname - Topic name in string
+ * @returns {number} - topic id
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+getTopicIDfun = async (req, topicname) => {
+    try {
+        let db_name = req.user.uad || req.body.db_name;
+        if(topicname == null) return -1;
+
+        // Fetches all the active records with the specific Topic ID
+        var query_topic = `SELECT m_help_topic.id AS topic_id FROM ${db_name}.m_help_topic WHERE m_help_topic.name = ? and m_help_topic.is_active = ?;`;
+        query_topic = mysql.format(query_topic,[
+                topicname,
+                1
+            ]);
+        let ptopic_idres = await connection.rpool(query_topic);
+        let ptopic_id=-1;
+        ptopic_idres.forEach((element) => {
+            ptopic_id = element.topic_id;
+        });
+        // logger.info(ptopic_id);
+        return Promise.resolve(ptopic_id);
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        return Promise.reject(error);
+    }
+}
+
+/**
+ * Gets the Question title as the input and return the question id
+ * @param {Request} req - HTTP Request
+ * @param {string} qtitle - Question title in string
+ * @returns {number} - question id
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+getQuesID = async (req, qtitle) => {
+try{
+    let db_name = req.user.uad || req.body.db_name;
+    if(qtitle == null) return -1;
+
+    // Fetches all the active records with the specific Questions ID
+    var query_ques = `SELECT t_help_question.id AS ques_id FROM ${db_name}.t_help_question WHERE t_help_question.title = ? and t_help_question.is_active = ?;`;
+        query_ques = mysql.format(query_ques,[
+            qtitle,
+            1
+        ]);
+    let q_idres = await connection.rpool(query_ques);
+    let q_id=-1;
+    q_idres.forEach((element) => {
+        q_id = element.ques_id;
+    });
+    return Promise.resolve(q_id);
+} catch (error) {
+    console.log(error);
+    logger.info(error);
+    return Promise.reject(error);
+}
+}
+
+/**
+ * Gets the Answer id as the input and checks for the existance
+ * @param {Request} req - HTTP Request
+ * @param {number} a_id - Answer id in number
+ * @returns {Promise} - Promise resolve or Promise reject
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+ getAnsID = async (req, q_id, ansby) => {
+    try{
+        let db_name = req.user.uad || req.body.db_name;
+        q_id=fquesId;
+        if(q_id == null||ansby == null) return -1;
+
+        // Fetches all the active records with the specific Answer ID
+        var query_ans = `SELECT t_help_answer.* FROM ${db_name}.t_help_answer WHERE t_help_answer.question_id = ? and t_help_answer.is_active = ? and t_help_answer.ans_by = ?;`;
+            query_ans = mysql.format(query_ans,[
+                q_id,
+                1,
+                ansby
+            ]);
+        let a_idres = await connection.rpool(query_ans);
+        let check_a_id=-1;
+        a_idres.forEach((element) => {
+            check_a_id = element.id;
+        });
+        return Promise.resolve(check_a_id);
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        return Promise.reject(error);
+    }
+}
+
+/**
+ * Gets the Type name as the input and return the type id
+ * @param {Request} req - HTTP Request
+ * @param {string} etype - Element type name in string
+ * @returns {number} - type id
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+getEleTypeID = async (req, etype) => {
+try{
+    let db_name = req.user.uad || req.body.db_name;
+    if(etype == null) return -1;
+
+    // Fetches all the active records with the specific Elemetn Type ID
+    var query_ele = `SELECT m_help_type.id AS type_id FROM ${db_name}.m_help_type WHERE m_help_type.name = ? and m_help_type.is_active = ?;`;
+        query_ele = mysql.format(query_ele,[
+            etype,
+            1
+        ]);
+    let type_idres = await connection.rpool(query_ele);
+    let type_id=-1;
+    type_idres.forEach((element) => {
+        type_id = element.type_id;
+    });
+    return Promise.resolve(type_id);
+} catch (error) {
+    console.log(error);
+    logger.info(error);
+    return Promise.reject(error);
+}
+}
+
+/**
+ * Gets the Type Id as the input and return the Element Type name
+ * @param {Request} req - HTTP Request
+ * @param {int} etype - Element Type Id in string
+ * @returns {String} - Type name
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+ getEleTypeName = async (req, etype_id) => {
+    try{
+        let db_name = req.user.uad || req.body.db_name;
+        if(etype_id == null) return "-1";
+    
+        // Fetches all the active records with the specific Elemetn Type ID
+        var query_ele = `SELECT m_help_type.name AS type_name FROM ${db_name}.m_help_type WHERE m_help_type.id = ? and m_help_type.is_active = ?;`;
+            query_ele = mysql.format(query_ele,[
+                etype_id,
+                1
+            ]);
+        let type_nameres = await connection.rpool(query_ele);
+        let type_name;
+        type_nameres.forEach((element) => {
+            type_name = element.type_name;
+        });
+        return Promise.resolve(type_name);
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        return Promise.reject(error);
+    }
+}
+
+/**
+ * Gets the parent topic name and the child topic name as the input and checks for their existance
+ * If found retrives the Topic id else inserts a new record
+ * @param {Request} req - HTTP Request
+ * @param {string} ptopic - Parent Topic name in string
+ * @param {string} topic - Child Topic name in string
+ * @returns {Promise} - Promise(resolve/reject)
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+topicPfun = async (req, ptopic, topic) => {
+    try{
+        let db_name = req.user.uad || req.body.db_name;
+        let ptopic_id,topic_id;
+        ptopic_id = await getTopicIDfun(req, ptopic);
+        if(ptopic_id==-1){
+            console.log("Parent Not found");
+            logger.info("Parent Not found");
+            Promise.reject({err:true, 
+                message: `Parent Not Found!`});
+        }
+        else{
+            topic_id = await getTopicIDfun(req, topic);
+            if(topic_id==-1){
+
+                // Inserts a new record with the given Topic and Parent Topic
+                var query_topic = `INSERT INTO ${db_name}.m_help_topic(name,parent_id) VALUES (?,?);`;
+                query_topic = mysql.format(query_topic,[
+                    topic,
+                    ptopic_id
+                ]);
+                await connection.pool(query_topic);
+                topic_id = await getTopicIDfun(req, topic);
+                insertionBool = true;
+            }
+            ftopic_Id=topic_id;
+            // logger.info(ftopic_Id);
+            return Promise.resolve();
+        }
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        return Promise.reject(error);
+    }
+}
+
+/**
+ * Gets the Question title as the input and checks for its existance
+ * If found retrives the Question id else inserts a new record
+ * @param {Request} req - HTTP Request
+ * @param {string} qtitle - Question title in string
+ * @param {number} topic_id - Topic id in number
+ * @returns {Promise} - Promise(resolve/reject)
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+quesPfun = async (req, qtitle, topic_id) => {
+    try{
+        topic_id=ftopic_Id;
+        let db_name = req.user.uad || req.body.db_name;
+        let q_id = await getQuesID(req, qtitle);
+        if(q_id==-1){
+
+            // Inserts a new record with the given Question title and Topic Id
+            var query_ques = `INSERT INTO ${db_name}.t_help_question(title,topic_id) VALUES (?,?);`;
+            query_ques = mysql.format(query_ques,[
+                qtitle,
+                topic_id
+            ]);
+            await connection.pool(query_ques);
+            q_id = await getQuesID(req, qtitle);
+        }
+        fquesId=q_id;
+        return Promise.resolve();
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        return Promise.reject(error);
+    }
+}
+
+/**
+ * Gets the Question id and ansby as the input and inserts it into the database and retrives the Answer id
+ * @param {Request} req - HTTP Request
+ * @param {number} q_id - Question id in number
+ * @param {number} ansby - Ansby in number - OID of the answerer
+ * @returns {Promise} - Promise(resolve/reject)
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+ansPfun = async (req, q_id, ansby) => {
+    try{
+        let db_name = req.user.uad || req.body.db_name;
+        q_id=fquesId;
+        let res_a_id = await getAnsID(req, q_id, ansby);
+        let a_id;
+        if(res_a_id == -1){
+
+            // Inserts a new record with the given Question ID and ID of the Answering user
+            var query_ans = `INSERT INTO ${db_name}.t_help_answer(question_id,ans_by) VALUES (?,?);`;
+            query_ans = mysql.format(query_ans,[
+                q_id,
+                ansby
+            ]);
+            let result_ans = await connection.pool(query_ans);
+            a_id = result_ans.insertId;
+            fansId = a_id;
+            return Promise.resolve();
+        }
+        else{
+            fansId = res_a_id;
+            return Promise.resolve();
+        }
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        return Promise.reject(error);
+    }
+}
+
+/**
+ * Gets the Element type name as the input and checks for its existance
+ * If found retrives the Elememt Type id else inserts a new record
+ * @param {Request} req - HTTP Request
+ * @param {string} etype - Element type name in string
+ * @returns {Promise} - Promise(resolve/reject)
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+etypePfun = async (req, etype) => {
+    try{
+        let db_name = req.user.uad || req.body.db_name;
+        let type_id = await getEleTypeID(req, etype);
+        if(type_id == -1){
+
+            // Inserts a new record with the given Element Type
+            var query_eletype = `INSERT INTO ${db_name}.m_help_type(name) VALUES (?);`;
+            query_eletype = mysql.format(query_eletype,[
+                etype
+            ]);
+            let result_eletype = await connection.pool(query_eletype);
+            type_id = result_eletype.insertId;
+        }
+        fetypeId = type_id;
+        return Promise.resolve(type_id);
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        return Promise.reject(error);
+    }
+}
+
+/**
+ * Gets the Answer id, Element Type id and Element value as the input
+ * Inserts it into the database and retrives the Element id
+ * @param {Request} req - HTTP Request
+ * @param {number} a_id - Answer id in number
+ * @param {number} type_id - Type id in number
+ * @param {string} evalue - Element value in string
+ * @returns {Promise} - Promise(resolve/reject)
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+elePfun = async (req, a_id, type_id, evalue) => {
+    try{
+        let db_name = req.user.uad || req.body.db_name;
+        let ele_id;
+
+        // Inserts a new record with the given Answer ID, Element Type ID and Element Value
+        var query_ele = `INSERT INTO ${db_name}.t_help_element(ans_id,type_id,value) VALUES (?,?,?);`;
+        query_ele = mysql.format(query_ele,[
+            a_id,
+            type_id,
+            evalue
+        ]);
+        let result_ele = await connection.pool(query_ele);
+        ele_id = result_ele.insertId;
+        finaleleId = ele_id;
+        return Promise.resolve();
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        return Promise.reject(error);
+    }
+}
+
+/**
+ * Gets the Answer id, Element Type id, Element value, Element carouselTitle and Element carouselDescription as the input
+ * Inserts it into the database and retrives the Element id
+ * @param {Request} req - HTTP Request
+ * @param {number} a_id - Answer id in number
+ * @param {number} type_id - Type id in number
+ * @param {string} evalue - Element value in string
+ * @param {string} carouselTitle - Element carouselTitle in string
+ * @param {string} carouselDescription - Element carouselDescription in string
+ * @returns {Promise} - Promise(resolve/reject)
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+ eleCarouselPfun = async (req, a_id, type_id, evalue, carouselTitle, carouselDescription) => {
+    try{
+        let db_name = req.user.uad || req.body.db_name;
+        let ele_id;
+
+        // Inserts a new record with the given Answer ID, Element Type ID and Element Value
+        var query_ele = `INSERT INTO ${db_name}.t_help_element(ans_id,type_id,value,carousel_title, \
+            carousel_description) VALUES (?,?,?,?,?);`;
+        query_ele = mysql.format(query_ele,[
+            a_id,
+            type_id,
+            evalue,
+            carouselTitle,
+            carouselDescription
+        ]);
+        let result_ele = await connection.pool(query_ele);
+        ele_id = result_ele.insertId;
+        finaleleId = ele_id;
+        return Promise.resolve();
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        return Promise.reject(error);
+    }
+}
+
+/**
+ * A module that creates/insert a new record
+ * It uses Promises to execute the logic
+ * @module createRecord
+ * @param {Request} req 
+ * @param {JSON} req.body.answerForm - Gets the answer Form in JSON format
+ * @param {string} req.body.answerForm.parentTopic - Gets the Parent Topic name in string
+ * @param {string} req.body.answerForm.questionTopic - Gets the Topic name in string
+ * @param {string} req.body.answerForm.question - Gets the Question title in string
+ * @param {Array} req.body.answerForm.answerSet - Gets the Answers in an Array
+ * @param {Response} res  
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+module.exports.createRecord = async (req,res)=>{
+    try {
+        let answerForm = req.body.answerForm;
+        let ptopic = answerForm.parentTopic;
+        let topic = answerForm.questionTopic;
+        let ques_title = answerForm.question;
+        let answers = answerForm.answerSet;
+
+        // Error Handling for missing values
+        if(ptopic == null||topic == null||ques_title == null||answers == null) {
+            res.status(400).send({
+                err:true, message: `Details Missing!`
+            });
+        }
+        else{
+            let promises = [];
+            promises.push(
+                await topicPfun(req, ptopic, topic)
+            );
+            promises.push(
+                await quesPfun(req, ques_title, ftopic_Id)
+            );
+            answers.forEach(async(answer)=>{
+                promises.push(
+                    await ansPfun(req, fquesId, req.user.oid)
+                );
+                answer.elements.forEach(async(element)=>{
+                    var funansid=fansId;
+                    promises.push(
+                        await etypePfun(req, element.type)
+                    );
+                    if(element.type==='imageCarousel'||element.type==='videoCarousel'){
+                        promises.push(
+                            await eleCarouselPfun(req, funansid, fetypeId, element.value, element.carouselTitle, element.carouselDescription)
+                        );
+                    }
+                    else{
+                        promises.push(
+                            await elePfun(req, funansid, fetypeId, element.value)
+                        );
+                    }
+                });
+            });
+
+            // Insertion status is returned to the client
+            let check=1;
+            await Promise.all(promises).then(()=>{
+                res.status(200).send({
+                    err:false, 
+                    message: {
+                        'value':`Insertion Successfull`,
+                        'topic_id':ftopic_Id
+                    }
+                });
+                check=0;
+            });
+            if(check==1){
+                res.status(404).send({
+                    err:true, 
+                    message: `Insertion Failed`});
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        res.status(404).send({err:true, message: error});
+    }
+}
+
+/**
+ * A module that creates/insert a new User Query
+ * It uses Promises to execute the logic
+ * @module createUserQuery
+ * @param {Request} req 
+ * @param {JSON} req.body.userQuery - Gets the User Query in JSON format
+ * @param {string} req.body.userQuery.queryForm - Gets the User Query Form Details in JSON format
+ * @param {Response} res  
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+ module.exports.createUserQuery = async (req,res)=>{
+    try {
+        let userQuery = req.body.userQuery;
+        let queryForm = userQuery.queryForm;
+        let queryTitle = queryForm.queryTitle;
+        let name = req.user.name;
+        let userOid = req.user.oid;
+        let emailId = req.user.email;
+        let countryCode = queryForm.countryCode;
+        let phoneNumber = queryForm.phoneNumber;
+        let message = queryForm.message;
+        let db_name = req.user.uad || req.body.db_name;
+
+        // Error Handling for missing values
+        if(queryTitle==null||name==null||emailId==null||countryCode==null||phoneNumber==null||message==null) {
+            res.status(400).send({
+                err:true, message: `Details Missing!`
+            });
+        }
+        else{
+            var query_insert = `INSERT INTO ${db_name}.t_help_user_query(query_title,name,email_id,country_code, \
+                phone_number,message,user_oid) VALUES (?,?,?,?,?,?,?);`;
+            let result_insert = await connection.pool(query_insert,[queryTitle,name,emailId,countryCode,phoneNumber,message,userOid]);
+            if(result_insert.affectedRows>0){
+                this.sendMail(emailId, `Dear ${name}, We have registered your query and our team will connect with you shortly. Thank you for reaching us.`, `Query Registered Successfully`, {'tenant_id':req.user.tid}, req, res);
+                res.status(200).send({
+                    err:false, 
+                    message: `Inserted Successfully!`
+                });
+            }
+        }    
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        res.status(404).send({err:true, message: error});
+    }
+}
+
+/**
+ * A module that reads the first 10 questions for the requested Topic id
+ * It returns the updation status
+ * @module getQuesByTopic
+ * @param {Request} req 
+ * @param {number} req.query.topic_id - Gets the Topic id in number
+ * @param {Response} res  
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+//LIMIT HAS TO BE APPLIED
+module.exports.getQuesByTopic = async (req,res) => {
+    try {
+        let db_name = req.user.uad || req.body.db_name;
+        let topic_id = req.query.topic_id;
+
+        // Error Handling for missing values
+        if(topic_id == null) {
+            res.status(400).send({
+                err:true, message: `Topic ID not found`
+            });
+        }
+        else{
+            // Fetches the Topic name and Parent Topic name
+            let query_name = `SELECT m_help_topic.* FROM ${db_name}.m_help_topic WHERE m_help_topic.id = ? AND m_help_topic.is_active = ?`;
+            let result_name = await connection.rpool(query_name,[topic_id,1]);
+            if(result_name.length==0){
+                res.status(404).send({
+                    err:false, 
+                    message: "Topic not Found!"
+                });
+            }
+            else{
+                let query_pname = `SELECT m_help_topic.* FROM ${db_name}.m_help_topic WHERE m_help_topic.id = ? AND m_help_topic.is_active = ?`;
+                let result_pname = await connection.rpool(query_pname,[result_name[0].parent_id,1]);
+                var finalres={};
+                finalres.parentTopic=result_pname[0].name;
+                finalres.questionTopic=result_name[0].name;
+
+                // Fetches all the active questions for the given Topic ID
+                let query_ques = `SELECT t_help_question.* FROM ${db_name}.t_help_question WHERE t_help_question.topic_id = ? AND t_help_question.is_active = ?  ORDER BY t_help_question.frequency`;
+                let result_ques = await connection.rpool(query_ques,[topic_id, 1]);
+                if(result_ques.length==0){
+                    res.status(200).send({
+                        err:false, 
+                        message: "No Result found!"
+                    });
+                }
+                else{
+                    let arr_ques_res=[];
+                    result_ques.forEach(async (question, index_ques)=>{
+                        let ques_id = question.id;
+                        let ques_res={};
+                        ques_res.question_id=question.id;
+                        ques_res.question=question.title;
+
+                        // Fetches all the active Answers and Elements related to the specific Question ID
+                        let query_ans = `SELECT ans.id AS a_id,ele.id AS e_id,ele.type_id AS e_type_id,ele.value AS e_value,ans.ans_by, typetab.name AS e_type_name,\
+                            ele.carousel_title AS carouselTitle, ele.carousel_description AS carouselDescription \
+                            FROM ${db_name}.t_help_answer AS ans INNER JOIN ${db_name}.t_help_element AS ele \
+                            ON ans.id=ele.ans_id AND ans.question_id = ? AND ans.is_active = ? AND ele.is_active = ? INNER JOIN ${db_name}.m_help_type AS typetab \
+                            ON typetab.id = ele.type_id;`;
+                        let result_ans = await connection.rpool(query_ans,[ques_id, 1, 1]);
+
+                        // Grouping Elements based on the Answer ID
+                        let result_grp = _.groupBy(result_ans, 'a_id');
+                        question.ele=result_grp;
+                        ques_res.answerSet = [];
+                        let grp_ans_by = _.groupBy(result_ans, 'ans_by');
+                        var obj_ans = await JSON.parse(JSON.stringify(grp_ans_by));
+                        var keys_ans = Object.keys(obj_ans);
+                            var obj_grp = await JSON.parse(JSON.stringify(result_grp));
+                            var keys_grp = Object.keys(obj_grp);
+                            var index_count=0;
+                            keys_grp.forEach(async(key1)=>{
+                                let final_ele_arr=[];
+                                let value_grp = obj_grp[key1];
+                                value_grp.forEach(async(element_grp)=>{
+                                    let e_type_name = element_grp.e_type_name;
+                                        let element_json = {};
+                                        element_json["type"]=e_type_name;
+                                        element_json["value"]=element_grp.e_value;
+                                        if(e_type_name==='imageCarousel'||e_type_name==='videoCarousel'){
+                                            element_json["carouselTile"]=element_grp.carouselTitle;
+                                            element_json["carouselDescription"]=element_grp.carouselDescription;
+                                        }
+                                        final_ele_arr.push(element_json);
+                                });
+                                ques_res.answerSet.push({'answerBy':JSON.stringify(obj_ans[keys_ans[index_count]][0].ans_by),'elements':final_ele_arr});
+                                index_count++;
+                            });
+                        
+                        arr_ques_res.push(ques_res);
+
+                        // Returns the Groupped Result when the last Element in the list is traversed
+                        if(index_ques==result_ques.length-1){
+                            finalres.questions=arr_ques_res;
+                            res.status(200).send({
+                                err:false, 
+                                message: finalres
+                            });
+                        }
+                    })
+                }
+            }
+        }
+    } catch (error) {
+        logger.info(error);
+        console.log(error);
+        res.status(404).send({err:true, message: error});
+    }
+};
+
+/**
+ * A module that updates the title of the provided Question id
+ * It returns the updation status
+ * @module updateQues
+ * @param {Request} req 
+ * @param {number} req.body.ques_id - Gets the Question id in number
+ * @param {string} req.body.ques_title - Gets the Question title in string
+ * @param {Response} res  
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+ module.exports.updateQues = async (req,res) => {
+    try {
+        let db_name = req.user.uad || req.body.db_name;
+        let ques_id = req.body.ques_id;
+        let ques_title = req.body.ques_title;
+
+        // Error Handling for missing values
+        if(ques_id == null||ques_title == null) {
+            res.status(400).send({
+                err:true, message: `Question Details Missing!`
+            });
+        }
+        else{
+
+            // Fetches all the active Questions with specified Question ID
+            var query_select = `SELECT t_help_question.* FROM ${db_name}.t_help_question WHERE t_help_question.id = ? and t_help_question.is_active = ?;`;
+            let result_select = await connection.rpool(query_select,[ques_id, 1]);
+            if(result_select.length==0){res.status(404).send({
+                err:true, 
+                message: `Question doesn't exists!`});return;};
+
+            // Updates the Question Title for the specified Question ID
+            var query_update = `UPDATE ${db_name}.t_help_question set t_help_question.title = ? WHERE t_help_question.id = ?;`;
+            let result_update = await connection.pool(query_update,[ques_title, ques_id]);
+
+            // Returns the Updation Status
+            if(result_update.changedRows>0){
+                res.status(200).send({
+                    err:false, 
+                    message: `Updation Successful!`});
+            }
+            else{
+                res.status(404).send({
+                    err:true, 
+                    message: `Updation Failed!`});
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        res.status(404).send({err:true, message: error});
+    }
+}
+
+/**
+ * A module that updates the frequency of the provided Question id
+ * It returns the updation status
+ * @module updateViews
+ * @param {Request} req 
+ * @param {number} req.body.ques_id - Gets the Question id in number
+ * @param {Response} res  
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+module.exports.updateViews = async (req,res) => {
+    try {
+        let db_name = req.user.uad || req.body.db_name;
+        let ques_id = req.body.ques_id;
+        let view_by = req.user.oid;
+
+        // Error Handling for missing values
+        if(ques_id == null||view_by == null) {
+            res.status(400).send({
+                err:true, message: `View Details Missing!`
+            });
+        }
+        else{
+
+            // Fetches all the active Questions with specified Question ID
+            var query_select = `SELECT t_help_views.* FROM ${db_name}.t_help_views WHERE t_help_views.question_id = ? and t_help_views.view_by = ? and t_help_views.is_active = ?;`;
+            let result_select = await connection.rpool(query_select,[ques_id, view_by, 1]);
+            if(result_select.length&lt;1){
+                // Inserts a new record in the Views Table
+                var query_insert = `INSERT INTO ${db_name}.t_help_views (question_id,view_by) VALUES (?,?);`;
+                let result_insert = await connection.pool(query_insert,[ques_id, view_by]);
+                // Checks for Insertion
+                if(result_insert.affectedRows>0){
+
+                    // Updates the frequency for the specified Question ID
+                    var query_update = `UPDATE ${db_name}.t_help_question set t_help_question.frequency = t_help_question.frequency + 1 WHERE t_help_question.id = ?;`;
+                    let result_update = await connection.pool(query_update,[ques_id]);
+
+                    // Returns the Updation Status
+                    if(result_update.changedRows>0){
+                        res.status(200).send({
+                            err:false, 
+                            message: `View Updated Successful!`});
+                    }
+                    else{
+                        res.status(404).send({
+                            err:true, 
+                            message: `View Updation Failed!`});
+                    }
+                }
+                else{
+                    res.status(404).send({
+                        err:true, 
+                        message: `Insertion Failed!`});
+                }
+            }
+            else{
+                res.status(200).send({
+                    err:false, 
+                    message: `View Already exits!`});
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        res.status(404).send({err:true, message: error});
+    }
+}
+
+/**
+ * A module that updates the element of the provided Answer id and Element id
+ * It returns the updation status
+ * @module updateAns
+ * @param {Request} req 
+ * @param {number} req.body.ans_id - Gets the Answer id in number
+ * @param {number} req.body.ele_id - Gets the Element id in number
+ * @param {string} req.body.ele_type - Gets the Element Type in string
+ * @param {string} req.body.ele_value - Gets the Element value in string
+ * @param {Response} res  
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+module.exports.updateAns = async (req,res) => {
+    try {
+        let db_name = req.user.uad || req.body.db_name;
+        let ans_id = req.body.ans_id;
+        let ele_id = req.body.ele_id;
+        let ele_type = req.body.ele_type;
+        let ele_value = req.body.ele_value;
+
+        // Error Handling for missing values
+        if(ans_id == null||ele_id == null||ele_type == null||ele_value == null) {
+            res.status(400).send({
+                err:true, message: `Answer Details Missing!`
+            });
+        }
+        else{
+            // Fetches all the active Answer Details with specified Answer ID
+            var query_select = `SELECT t_help_answer.* FROM ${db_name}.t_help_answer WHERE t_help_answer.id = ? and t_help_answer.is_active = ?;`;
+            let result_select = await connection.rpool(query_select,[ans_id, 1]);
+            if(result_select.length==0){res.status(404).send({
+                err:true, 
+                message: `Answer doesn't exists!`});return;};
+
+            // Fetches all the active Elements with specified Element ID and Answer ID
+            var query_select_ele = `SELECT t_help_element.* FROM ${db_name}.t_help_element WHERE t_help_element.id = ? and t_help_element.ans_id=? and t_help_element.is_active = ?;`;
+            let result_select_ele = await connection.rpool(query_select_ele,[ele_id,ans_id, 1]);
+            if(result_select_ele.length==0){res.status(404).send({
+                err:true, 
+                message: `Element doesn't exists!`});return;};
+            let type_id = await etypePfun(req, ele_type);
+
+            // Updates the Element Value for the specified Element ID
+            var query_update = `UPDATE ${db_name}.t_help_element set t_help_element.type_id = ?, t_help_element.value = ? WHERE t_help_element.id = ? and t_help_element.ans_id = ?;`;
+            let result_update = await connection.pool(query_update,[type_id, ele_value, ele_id, ans_id]);
+
+            // Returns the Updation Status
+            if(result_update.changedRows>0){
+                res.status(200).send({
+                    err:false, 
+                    message: `Updation Successful!`});
+            }
+            else{
+                res.status(404).send({
+                    err:true, 
+                    message: `Updation Failed!`});
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        res.status(404).send({err:true, message: error});
+    }
+}
+
+/**
+ * A module that updates the General Detail of the provided Record id
+ * It returns the updation status
+ * @module updateGeneralDetails
+ * @param {Request} req 
+ * @param {number} req.body.id - Gets the id in number
+ * @param {string} req.body.details_for - Gets the Details-For in string
+ * @param {string} req.body.value - Gets the value in string
+ * @param {Response} res  
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+ module.exports.updateGeneralDetails = async (req,res) => {
+    try {
+        let db_name = req.user.uad || req.body.db_name;
+        let id = req.body.id;
+        let details_for = req.body.details_for;
+        let value = req.body.value;
+
+        // Error Handling for missing values
+        if(id == null||details_for == null||value == null) {
+            res.status(400).send({
+                err:true, message: `General Details Missing!`
+            });
+        }
+        else{
+
+            // Fetches all the active General Details with specified ID and Details_For value
+            var query_select = `SELECT m_help_general_details.* FROM ${db_name}.m_help_general_details \
+                WHERE m_help_general_details.id = ? and m_help_general_details.details_for = ? and m_help_general_details.is_active = ?;`;
+            let result_select = await connection.rpool(query_select,[id, details_for, 1]);
+            if(result_select.length==0){res.status(404).send({
+                err:true, 
+                message: `Record doesn't exists!`});return;};
+
+            // Updates the General Detail for the specified ID
+            var query_update = `UPDATE ${db_name}.m_help_general_details set m_help_general_details.value = ? WHERE m_help_general_details.id = ?;`;
+            let result_update = await connection.pool(query_update,[value, id]);
+
+            // Returns the Updation Status
+            if(result_update.changedRows>0){
+                res.status(200).send({
+                    err:false, 
+                    message: `Updation Successful!`});
+            }
+            else{
+                res.status(404).send({
+                    err:true, 
+                    message: `Updation Failed!`});
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        res.status(404).send({err:true, message: error});
+    }
+}
+
+/**
+ * A module that Delete the Topic with the provided Topic id
+ * It returns the deletion status
+ * @module deleteTopic
+ * @param {Request} req 
+ * @param {number} req.body.topic_id - Gets the Topic id in number
+ * @param {Response} res  
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+ module.exports.deleteTopic = async (req,res) => {
+    try {
+        let db_name = req.user.uad || req.body.db_name;
+        let topic_id = req.body.topic_id;
+
+        // Error Handling for missing values
+        if(topic_id == null) {
+            res.status(400).send({
+                err:true, message: `Topic ID not found`
+            });
+        }
+        else{
+            // Fetches all the active Topic with specified Topic ID
+            var query_select = `SELECT m_help_topic.* FROM ${db_name}.m_help_topic WHERE m_help_topic.id = ? and m_help_topic.is_active = ?;`;
+            let result_select = await connection.rpool(query_select,[topic_id, 1]);
+            if(result_select.length==0){res.status(404).send({
+                err:true, 
+                message: `Topic doesn't exists!`});return;};
+        
+            // Updates the 'is_active' value to 0 for the specified Topic ID
+            var query_delete = `UPDATE ${db_name}.m_help_topic set m_help_topic.is_active = ? WHERE m_help_topic.id = ?;`;
+            let result_delete = await connection.pool(query_delete,[0, topic_id]);
+
+            // Returns the Deletion Status
+            if(result_delete.changedRows>0){
+                res.status(200).send({
+                    err:false, 
+                    message: `Deletion Successful!`});
+            }
+            else{
+                res.status(404).send({
+                    err:true, 
+                    message: `Deletion Failed!`});
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        res.status(404).send({err:true, message: error});
+    }
+}
+
+/**
+ * A module that Delete the Question with the provided Question id
+ * It returns the deletion status
+ * @module deleteQues
+ * @param {Request} req 
+ * @param {number} req.body.ques_id - Gets the Question id in number
+ * @param {Response} res  
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+ module.exports.deleteQues = async (req,res) => {
+    try {
+        let db_name = req.user.uad || req.body.db_name;
+        let ques_id = req.body.ques_id;
+
+        // Error Handling for missing values
+        if(ques_id == null) {
+            res.status(400).send({
+                err:true, message: `Question ID not found`
+            });
+        }
+        else{
+            // Fetches all the active Question with specified Question ID
+            var query_select = `SELECT t_help_question.* FROM ${db_name}.t_help_question WHERE t_help_question.id = ? and t_help_question.is_active = ?;`;
+            let result_select = await connection.rpool(query_select,[ques_id, 1]);
+            if(result_select.length==0){res.status(404).send({
+                err:true, 
+                message: `Question doesn't exists!`});return;};
+            
+            // Updates the 'is_active' value to 0 for the specified Question ID
+            var query_delete = `UPDATE ${db_name}.t_help_question set t_help_question.is_active = ? WHERE t_help_question.id = ?;`;
+            let result_delete = await connection.pool(query_delete,[0, ques_id]);
+
+            // Returns the Deletion Status
+            if(result_delete.changedRows>0){
+                res.status(200).send({
+                    err:false, 
+                    message: `Deletion Successful!`});
+            }
+            else{
+                res.status(404).send({
+                    err:true, 
+                    message: `Deletion Failed!`});
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        res.status(404).send({err:true, message: error});
+    }
+}
+
+/**
+ * A module that Delete the Answer with the provided Answer id
+ * It returns the deletion status
+ * @module deleteAns
+ * @param {Request} req 
+ * @param {number} req.body.ans_id - Gets the Answer id in number
+ * @param {Response} res  
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+ module.exports.deleteAns = async (req,res) => {
+    try {
+        let db_name = req.user.uad || req.body.db_name;
+        let ans_id = req.body.ans_id;
+
+        // Error Handling for missing values
+        if(ans_id == null) {
+            res.status(400).send({
+                err:true, message: `Answer ID not found`
+            });
+        }
+        else{
+            // Fetches all the active Answers with specified Answer ID
+            var query_select = `SELECT t_help_answer.* FROM ${db_name}.t_help_answer WHERE t_help_answer.id = ? and t_help_answer.is_active = ?;`;
+            let result_select = await connection.rpool(query_select,[ans_id, 1]);
+            if(result_select.length==0){res.status(404).send({
+                err:true, 
+                message: `Answer doesn't exists!`});return;};
+
+            // Updates the 'is_active' value to 0 for the specified Answer ID
+            var query_delete = `UPDATE ${db_name}.t_help_answer set t_help_answer.is_active = ? WHERE t_help_answer.id = ?;`;
+            let result_delete = await connection.pool(query_delete,[0, ans_id]);
+
+            // Returns the Deletion Status
+            if(result_delete.changedRows>0){
+                res.status(200).send({
+                    err:false, 
+                    message: `Deletion Successful!`});
+            }
+            else{
+                res.status(404).send({
+                    err:true, 
+                    message: `Deletion Failed!`});
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        res.status(404).send({err:true, message: error});
+    }
+}
+
+/**
+ * A module that Delete the Element with the provided Element id
+ * It returns the deletion status
+ * @module deleteElement
+ * @param {Request} req 
+ * @param {number} req.body.ele_id - Gets the Element id in number
+ * @param {Response} res  
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+ module.exports.deleteElement = async (req,res) => {
+    try {
+        let db_name = req.user.uad || req.body.db_name;
+        let ele_id = req.body.ele_id;
+
+        // Error Handling for missing values
+        if(ele_id == null) {
+            res.status(400).send({
+                err:true, message: `Element ID not found`
+            });
+        }
+        else{
+            // Fetches all the active Element with specified Element ID
+            var query_select = `SELECT t_help_element.* FROM ${db_name}.t_help_element WHERE t_help_element.id = ? and t_help_element.is_active = ?;`;
+            let result_select = await connection.rpool(query_select,[ele_id, 1]);
+            if(result_select.length==0){res.status(404).send({
+                err:true, 
+                message: `Element doesn't exists!`});return;};
+
+            // Updates the 'is_active' value to 0 for the specified Element ID
+            var query_delete = `UPDATE ${db_name}.t_help_element set t_help_element.is_active = ? WHERE t_help_element.id = ?;`;
+            let result_delete = await connection.pool(query_delete,[0, ele_id]);
+
+            // Returns the Deletion Status
+            if(result_delete.changedRows>0){
+                res.status(200).send({
+                    err:false, 
+                    message: `Deletion Successful!`});
+            }
+            else{
+                res.status(404).send({
+                    err:true, 
+                    message: `Deletion Failed!`});
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        res.status(404).send({err:true, message: error});
+    }
+}
+
+/**
+ * A module that Delete the Element Type with the provided Element Type id
+ * It returns the deletion status
+ * @module deleteElementType
+ * @param {Request} req 
+ * @param {number} req.body.type_id - Gets the Type id in number
+ * @param {Response} res  
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+ module.exports.deleteElementType = async (req,res) => {
+    try {
+        let db_name = req.user.uad || req.body.db_name;
+        let type_id = req.body.type_id;
+
+        // Error Handling for missing values
+        if(type_id == null) {
+            res.status(400).send({
+                err:true, message: `Element Type ID not found`
+            });
+        }
+        else{
+            // Fetches all the active Element Types with specified Element Type ID
+            var query_select = `SELECT m_help_type.* FROM ${db_name}.m_help_type WHERE m_help_type.id = ? and m_help_type.is_active = ?;`;
+            let result_select = await connection.rpool(query_select,[type_id, 1]);
+            if(result_select.length==0){res.status(404).send({
+                err:true, 
+                message: `Element Type doesn't exists!`});return;};
+            
+            // Updates the 'is_active' value to 0 for the specified Element Type ID
+            var query_delete = `UPDATE ${db_name}.m_help_type set m_help_type.is_active = ? WHERE m_help_type.id = ?;`;
+            let result2_delete = await connection.pool(query_delete,[0, type_id]);
+
+            // Returns the Deletion Status
+            if(result_delete.changedRows>0){
+                res.status(200).send({
+                    err:false, 
+                    message: `Deletion Successful!`});
+            }
+            else{
+                res.status(404).send({
+                    err:true, 
+                    message: `Deletion Failed!`});
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        res.status(404).send({err:true, message: error});
+    }
+}
+
+/**
+ * A module that Delete the General Detail with the provided Record id
+ * It returns the deletion status
+ * @module deleteGeneralDetail
+ * @param {Request} req 
+ * @param {number} req.body.genid - Gets the General Detail id in number
+ * @param {Response} res  
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+ module.exports.deleteGeneralDetail = async (req,res) => {
+    try {
+        let db_name = req.user.uad || req.body.db_name;
+        let genid = req.body.genid;
+
+        // Error Handling for missing values
+        if(gen_id == null) {
+            res.status(400).send({
+                err:true, message: `General Details ID not found`
+            });
+        }
+        else{
+            // Fetches all the active General Details with specified ID
+            var query_select = `SELECT m_help_general_details.* FROM ${db_name}.m_help_general_details WHERE m_help_general_details.id = ? and m_help_general_details.is_active = ?;`;
+            let result_select = await connection.rpool(query_select,[genid, 1]);
+            if(result_select.length==0){res.status(404).send({
+                err:true, 
+                message: `Record doesn't exists!`});return;};
+            
+            // Updates the 'is_active' value to 0 for the specified ID
+            var query_delete = `UPDATE ${db_name}.m_help_general_details set m_help_general_details.is_active = ? WHERE m_help_general_details.id = ?;`;
+            let result_delete = await connection.pool(query_delete,[0, genid]);
+
+            // Returns the Deletion Status
+            if(result2.changedRows>0){
+                res.status(200).send({
+                    err:false, 
+                    message: `Deletion Successful!`});
+            }
+            else{
+                res.status(404).send({
+                    err:true, 
+                    message: `Deletion Failed!`});
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        res.status(404).send({err:true, message: error});
+    }
+}
+
+/**
+ * A module that returns the first 5 Childs of the HELP Parent
+ * It returns the Topic id and Topic name of the Child topics
+ * @module getParentTopic
+ * @param {Request} req 
+ * @param {Response} res  
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+ module.exports.getParentTopic = async (req, res) => {
+    try {
+        let db_name = req.user.uad || req.body.db_name;
+        let topicid = 1;
+
+        // Fetches all the active Topic under the main(ROOT) HELP Topic with ROOT Topic ID = 1
+        var query_topic = `SELECT m_help_topic.* FROM ${db_name}.m_help_topic WHERE m_help_topic.parent_id=? and m_help_topic.is_active = ? LIMIT 5;`;
+        query_topic = mysql.format(query_topic,[
+            topicid,
+            1
+        ]);
+        let result_topic = await connection.rpool(query_topic);
+
+        // Returns the fetched value
+        if(result_topic.length==0){res.status(404).send({
+            err:true, 
+            message: `No Topics Found!`});return;};
+        res.status(200).send({
+            err:false, 
+            message: result_topic});
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        res.status(404).send({err:true, message: error});
+    }
+}
+
+/**
+ * A module that returns all the Childs of the HELP Parent
+ * It returns the Topic id and Topic name of the Child topics
+ * @module getAllParentTopic
+ * @param {Request} req 
+ * @param {Response} res  
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+ module.exports.getAllParentTopic = async (req, res) => {
+    try {
+        let db_name = req.user.uad || req.body.db_name;
+        let topicid = 1;
+
+        // Fetches all the active Topic under the main(ROOT) HELP Topic with ROOT Topic ID = 1
+        var query_topic = `SELECT m_help_topic.* FROM ${db_name}.m_help_topic WHERE (m_help_topic.parent_id=? or m_help_topic.id=?) and m_help_topic.is_active = ?;`;
+        query_topic = mysql.format(query_topic,[
+            topicid,
+            topicid,
+            1
+        ]);
+        let result_topic = await connection.rpool(query_topic);
+
+        // Returns the fetched value
+        if(result_topic.length==0){res.status(404).send({
+            err:true, 
+            message: `No Topics Found!`});return;};
+        res.status(200).send({
+            err:false, 
+            message: result_topic});
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        res.status(404).send({err:true, message: error});
+    }
+}
+
+/**
+ * A module that returns all the Child topic of the given parent topic
+ * It returns the Topic id and Topic name of the Child topics
+ * @module getChildTopic
+ * @param {Request} req 
+ * @param {number} req.query.parentTopic - Gets the parentTopic in number
+ * @param {Response} res  
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+ module.exports.getChildTopic = async (req, res) => {
+    try {
+        let db_name = req.user.uad || req.body.db_name;
+        let topicid = req.query.parentTopic;
+
+        // Fetches all the active Topic under the main(ROOT) HELP Topic with ROOT Topic ID = 1
+        var query_topic = `SELECT m_help_topic.* FROM ${db_name}.m_help_topic WHERE m_help_topic.parent_id=? and m_help_topic.is_active = ? LIMIT 5;`;
+        query_topic = mysql.format(query_topic,[
+            topicid,
+            1
+        ]);
+        let result_topic = await connection.rpool(query_topic);
+
+        // Returns the fetched value
+        if(result_topic.length==0){res.status(404).send({
+            err:true, 
+            message: `No Topics Found!`});return;};
+        res.status(200).send({
+            err:false, 
+            message: result_topic});
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        res.status(404).send({err:true, message: error});
+    }
+}
+
+/**
+ * A module that returns all the Element type that are available from the Database
+ * It returns Element Type available in the System
+ * @module getElementTypes
+ * @param {Request} req 
+ * @param {Response} res  
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+ module.exports.getElementTypes = async (req, res) => {
+    try {
+        let db_name = req.user.uad || req.body.db_name;
+
+        // Fetches all the Element Types existing in the Database
+        var query_type = `SELECT m_help_type.* FROM ${db_name}.m_help_type WHERE m_help_type.is_active = 1;`;
+        let result_type = await connection.rpool(query_type);
+
+        // Returns the fetched value
+        if(result_type.length==0){res.status(404).send({
+            err:true, 
+            message: `No Elements Found!`});return;};
+        res.status(200).send({
+            err:false, 
+            message: result_type});
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        res.status(404).send({err:true, message: error});
+    }
+}
+
+/**
+ * A module that read all the general data related to KEBS HELP
+ * It returns help contact number and help mail id
+ * @module readGeneralDetails
+ * @param {Request} req 
+ * @param {Response} res  
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+module.exports.readGeneralDetails = async (req, res) => {
+    try {
+        let db_name = req.user.uad || req.body.db_name;
+
+        // Fetches all the General Details
+        var query_gendet = `SELECT m_help_general_details.* FROM ${db_name}.m_help_general_details WHERE m_help_general_details.is_active = 1;`;
+        let result_gendet = await connection.rpool(query_gendet);
+
+        // Returns fetched value
+        if(result_gendet.length==0){res.status(404).send({
+            err:true, 
+            message: `No General Details Found!`});return;};
+        res.status(200).send({
+            err:false, 
+            message: result_gendet});
+    } catch (error) {
+        console.log(error);
+        logger.info(error);
+        res.status(404).send({err:true, message: error});
+    }
+}
+
+/**
+ * A module that sends a Mail Acknowledgement after a User Raises a query request
+ * It returns mail sent status
+ * @module sendMail
+ * @param {String} email -  Contains User Mail ID
+ * @param {String} msg - Contains the body of the mail
+ * @param {String} subject - Contains the subject of the mail
+ * @param {JSON} tenant_details - Contains the tenant Details
+ * @param {Request} req 
+ * @param {Response} res  
+ * @author Anish Chamaria
+ * @version 1.0
+ */
+module.exports.sendMail = async (email, msg, subject, tenant_detail, req, res) => {
+    try {
+  
+      let bodyParams = {
+        job_name: "send_email",
+        job_type: "normal",
+        job_description: "Send email to a user",
+        tenant_id: tenant_detail.tenant_id,
+        message_routing_key: `user_emails_key_${process.env.NODE_ENV}`,
+        tenant_info: tenant_detail,
+        email_details: {
+          email: email,
+          msg: msg,
+          subject: subject,
+          sender: null
+        }
+      };
+  
+      let config = {
+        url: `http://${process.env.RABBIT_MQ_SERVICE || "localhost:3900"
+          }/queue/addJob`,
+        method: "POST",
+        data: bodyParams,
+        headers: {
+          Authorization:
+            "Bearer " + req.headers.Authorization
+        }
+      };
+  
+      let response_data = await axios(config).catch((err) => {
+        console.log(err);
+        return null;
+      });
+  
+      return Promise.resolve(response_data);
+  
+    } catch (err) {
+      console.error(err);
+      logger.info(err);
+      return Promise.reject(err);
+    }
+  
+  };</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-createRecord.html">createRecord</a></li><li><a href="module-createUserQuery.html">createUserQuery</a></li><li><a href="module-deleteAns.html">deleteAns</a></li><li><a href="module-deleteElement.html">deleteElement</a></li><li><a href="module-deleteElementType.html">deleteElementType</a></li><li><a href="module-deleteGeneralDetail.html">deleteGeneralDetail</a></li><li><a href="module-deleteQues.html">deleteQues</a></li><li><a href="module-deleteTopic.html">deleteTopic</a></li><li><a href="module-getAllParentTopic.html">getAllParentTopic</a></li><li><a href="module-getChildTopic.html">getChildTopic</a></li><li><a href="module-getElementTypes.html">getElementTypes</a></li><li><a href="module-getParentTopic.html">getParentTopic</a></li><li><a href="module-getQuesByTopic.html">getQuesByTopic</a></li><li><a href="module-readGeneralDetails.html">readGeneralDetails</a></li><li><a href="module-sendMail.html">sendMail</a></li><li><a href="module-updateAns.html">updateAns</a></li><li><a href="module-updateGeneralDetails.html">updateGeneralDetails</a></li><li><a href="module-updateQues.html">updateQues</a></li><li><a href="module-updateViews.html">updateViews</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ansPfun">ansPfun</a></li><li><a href="global.html#eleCarouselPfun">eleCarouselPfun</a></li><li><a href="global.html#elePfun">elePfun</a></li><li><a href="global.html#etypePfun">etypePfun</a></li><li><a href="global.html#getAnsID">getAnsID</a></li><li><a href="global.html#getEleTypeID">getEleTypeID</a></li><li><a href="global.html#getEleTypeName">getEleTypeName</a></li><li><a href="global.html#getQuesID">getQuesID</a></li><li><a href="global.html#getTopicIDfun">getTopicIDfun</a></li><li><a href="global.html#quesPfun">quesPfun</a></li><li><a href="global.html#topicPfun">topicPfun</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Thu Mar 10 2022 10:05:54 GMT+0530 (India Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

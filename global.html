@@ -1,0 +1,2475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Global</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Global</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2></h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="ansPfun"><span class="type-signature"></span>ansPfun<span class="signature">(req, q_id, ansby)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Gets the Question id and ansby as the input and inserts it into the database and retrives the Answer id</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Request</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>HTTP Request</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>q_id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Question id in number</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ansby</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Ansby in number - OID of the answerer</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Anish Chamaria</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service_help.js.html">service_help.js</a>, <a href="service_help.js.html#line268">line 268</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>Promise(resolve/reject)</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="eleCarouselPfun"><span class="type-signature"></span>eleCarouselPfun<span class="signature">(req, a_id, type_id, evalue, carouselTitle, carouselDescription)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Gets the Answer id, Element Type id, Element value, Element carouselTitle and Element carouselDescription as the input
+Inserts it into the database and retrives the Element id</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Request</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>HTTP Request</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>a_id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Answer id in number</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>type_id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Type id in number</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>evalue</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Element value in string</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>carouselTitle</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Element carouselTitle in string</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>carouselDescription</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Element carouselDescription in string</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Anish Chamaria</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service_help.js.html">service_help.js</a>, <a href="service_help.js.html#line377">line 377</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>Promise(resolve/reject)</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="elePfun"><span class="type-signature"></span>elePfun<span class="signature">(req, a_id, type_id, evalue)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Gets the Answer id, Element Type id and Element value as the input
+Inserts it into the database and retrives the Element id</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Request</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>HTTP Request</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>a_id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Answer id in number</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>type_id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Type id in number</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>evalue</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Element value in string</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Anish Chamaria</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service_help.js.html">service_help.js</a>, <a href="service_help.js.html#line341">line 341</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>Promise(resolve/reject)</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="etypePfun"><span class="type-signature"></span>etypePfun<span class="signature">(req, etype)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Gets the Element type name as the input and checks for its existance
+If found retrives the Elememt Type id else inserts a new record</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Request</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>HTTP Request</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>etype</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Element type name in string</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Anish Chamaria</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service_help.js.html">service_help.js</a>, <a href="service_help.js.html#line307">line 307</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>Promise(resolve/reject)</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getAnsID"><span class="type-signature"></span>getAnsID<span class="signature">(req, a_id)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Gets the Answer id as the input and checks for the existance</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Request</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>HTTP Request</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>a_id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Answer id in number</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Anish Chamaria</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service_help.js.html">service_help.js</a>, <a href="service_help.js.html#line88">line 88</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>Promise resolve or Promise reject</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getEleTypeID"><span class="type-signature"></span>getEleTypeID<span class="signature">(req, etype)</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Gets the Type name as the input and return the type id</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Request</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>HTTP Request</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>etype</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Element type name in string</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Anish Chamaria</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service_help.js.html">service_help.js</a>, <a href="service_help.js.html#line122">line 122</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>type id</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getEleTypeName"><span class="type-signature"></span>getEleTypeName<span class="signature">(req, etype)</span><span class="type-signature"> &rarr; {String}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Gets the Type Id as the input and return the Element Type name</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Request</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>HTTP Request</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>etype</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Element Type Id in string</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Anish Chamaria</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service_help.js.html">service_help.js</a>, <a href="service_help.js.html#line154">line 154</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>Type name</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getQuesID"><span class="type-signature"></span>getQuesID<span class="signature">(req, qtitle)</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Gets the Question title as the input and return the question id</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Request</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>HTTP Request</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>qtitle</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Question title in string</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Anish Chamaria</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service_help.js.html">service_help.js</a>, <a href="service_help.js.html#line56">line 56</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>question id</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getTopicIDfun"><span class="type-signature"></span>getTopicIDfun<span class="signature">(req, topicname)</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Gets the topic name as the input and return the topic id</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Request</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>HTTP Request</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>topicname</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Topic name in string</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Anish Chamaria</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service_help.js.html">service_help.js</a>, <a href="service_help.js.html#line23">line 23</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>topic id</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="quesPfun"><span class="type-signature"></span>quesPfun<span class="signature">(req, qtitle, topic_id)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Gets the Question title as the input and checks for its existance
+If found retrives the Question id else inserts a new record</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Request</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>HTTP Request</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>qtitle</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Question title in string</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>topic_id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Topic id in number</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Anish Chamaria</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service_help.js.html">service_help.js</a>, <a href="service_help.js.html#line234">line 234</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>Promise(resolve/reject)</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="topicPfun"><span class="type-signature"></span>topicPfun<span class="signature">(req, ptopic, topic)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Gets the parent topic name and the child topic name as the input and checks for their existance
+If found retrives the Topic id else inserts a new record</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Request</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>HTTP Request</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ptopic</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Parent Topic name in string</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>topic</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Child Topic name in string</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Anish Chamaria</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service_help.js.html">service_help.js</a>, <a href="service_help.js.html#line188">line 188</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>Promise(resolve/reject)</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-createRecord.html">createRecord</a></li><li><a href="module-createUserQuery.html">createUserQuery</a></li><li><a href="module-deleteAns.html">deleteAns</a></li><li><a href="module-deleteElement.html">deleteElement</a></li><li><a href="module-deleteElementType.html">deleteElementType</a></li><li><a href="module-deleteGeneralDetail.html">deleteGeneralDetail</a></li><li><a href="module-deleteQues.html">deleteQues</a></li><li><a href="module-deleteTopic.html">deleteTopic</a></li><li><a href="module-getAllParentTopic.html">getAllParentTopic</a></li><li><a href="module-getChildTopic.html">getChildTopic</a></li><li><a href="module-getElementTypes.html">getElementTypes</a></li><li><a href="module-getParentTopic.html">getParentTopic</a></li><li><a href="module-getQuesByTopic.html">getQuesByTopic</a></li><li><a href="module-readGeneralDetails.html">readGeneralDetails</a></li><li><a href="module-sendMail.html">sendMail</a></li><li><a href="module-updateAns.html">updateAns</a></li><li><a href="module-updateGeneralDetails.html">updateGeneralDetails</a></li><li><a href="module-updateQues.html">updateQues</a></li><li><a href="module-updateViews.html">updateViews</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ansPfun">ansPfun</a></li><li><a href="global.html#eleCarouselPfun">eleCarouselPfun</a></li><li><a href="global.html#elePfun">elePfun</a></li><li><a href="global.html#etypePfun">etypePfun</a></li><li><a href="global.html#getAnsID">getAnsID</a></li><li><a href="global.html#getEleTypeID">getEleTypeID</a></li><li><a href="global.html#getEleTypeName">getEleTypeName</a></li><li><a href="global.html#getQuesID">getQuesID</a></li><li><a href="global.html#getTopicIDfun">getTopicIDfun</a></li><li><a href="global.html#quesPfun">quesPfun</a></li><li><a href="global.html#topicPfun">topicPfun</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Thu Mar 10 2022 10:05:54 GMT+0530 (India Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
